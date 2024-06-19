@@ -1,0 +1,436 @@
+<!DOCTYPE html>
+<html lang="en" xmlns="http://www.w3.org/1999/html">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>My Social Network</title>
+    <style>
+        .modal {
+            display: none;
+            position: fixed;
+            z-index: 1;
+            left: 0;
+            top: 0;
+            width: 100%;
+            height: 100%;
+            overflow: auto;
+            background-color: rgba(0, 0, 0, 0.4);
+        }
+
+        .modal-content {
+            background-color: #fefefe;
+            margin: 10% auto;
+            padding: 20px;
+            border: 1px solid #888;
+            width: 80%;
+        }
+
+        .close {
+            color: #aaa;
+            float: right;
+            font-size: 28px;
+            font-weight: bold;
+            cursor: pointer;
+        }
+
+        body {
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            background-color: #f4f4f4;
+            margin: 0;
+            padding: 20px;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+        }
+
+        h2 {
+            color: #333;
+            margin-bottom: 20px;
+        }
+
+        input {
+            width: 80%;
+            padding: 10px;
+            margin-bottom: 20px;
+            border: 1px solid #ccc;
+            border-radius: 5px;
+            font-size: 16px;
+        }
+
+        .search-icon {
+            position: absolute;
+            top: 50%;
+            right: 10%;
+            transform: translateY(-50%);
+            color: #555;
+            cursor: pointer;
+            font-size: 20px;
+        }
+
+        .post {
+            max-width: 800px;
+            margin: 0 auto;
+            background-color: #fff;
+            border-radius: 12px;
+            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+            padding: 20px;
+            margin-bottom: 20px;
+            transition: transform 0.3s ease;
+        }
+
+        .post:hover {
+            transform: scale(1.02);
+        }
+
+        .post h2 {
+            color: #333;
+            font-size: 2em;
+            margin-bottom: 15px;
+        }
+
+        .post p {
+            color: #666;
+            line-height: 1.6;
+        }
+
+        .post .card-body {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-top: 20px;
+        }
+
+        .post a.btn {
+            text-decoration: none;
+            color: #fff;
+            padding: 12px 18px;
+            border-radius: 5px;
+            cursor: pointer;
+            transition: background-color 0.3s ease;
+            margin-right: 15px;
+            text-align: center;
+            width: 120px;
+            display: inline-block;
+        }
+
+        .post a.btn-like {
+            background-color: #4d94ff;
+        }
+
+        .post a.btn-comment {
+            background-color: #ff9933;
+        }
+
+        .post a.btn:hover {
+            background-color: #0018ff;
+        }
+
+        body {
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            margin: 0;
+            padding: 0;
+            background-color: #f4f4f4;
+        }
+
+        header {
+            background-color: #333;
+            color: #fff;
+            padding: 10px;
+            text-align: center;
+        }
+
+        nav {
+            width: 20%;
+            float: left;
+            background-color: #ddd;
+            padding: 80px;
+            box-sizing: border-box;
+        }
+
+        section {
+            width: 80%;
+            float: left;
+            padding: 20px;
+            box-sizing: border-box;
+        }
+
+        nav a {
+            display: block;
+            margin-bottom: 20px;
+            padding: 20px;
+            text-decoration: none;
+            color: #333;
+            font-weight: bold;
+            border-radius: 5px;
+            transition: background-color 0.3s ease;
+        }
+
+        nav a:hover {
+            color: #fff;
+            background-color: #0018ff;
+        }
+
+        .post {
+            max-width: 400px; /* Устанавливаем максимальную ширину поста */
+            margin: 0 auto; /* Центрируем пост по горизонтали */
+            background-color: #fff;
+            border-radius: 12px;
+            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+            padding: 20px;
+            margin-bottom: 20px;
+            transition: transform 0.3s ease;
+        }
+
+        .post:hover {
+            transform: scale(1.02);
+        }
+
+        .post h2 {
+            color: #333;
+            font-size: 1.5em;
+            margin-bottom: 10px;
+        }
+
+        .post p {
+            color: #666;
+            line-height: 1.5;
+        }
+
+        nav {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 20%;
+            background-color: #ddd;
+            padding: 120px;
+            box-sizing: border-box;
+            transition: top 0.3s ease; /* Добавлено для плавного скрытия/показа nav */
+        }
+
+    </style>
+</head>
+<body>
+
+<header>
+    <h1>My Social Network</h1>
+</header>
+
+<nav>
+    <a href="#">Home</a>
+    <a th:href="@{search}" class="nav-link">Search</a>
+    <a th:href="@{searchUser}" class="nav-link">Search User</a>
+    <a href="#">Messages</a>
+    <a th:href="@{create/post/new}" class="nav-link">Create post </a>
+    <a th:href="@{/myProfile}" class="nav-link">My profile </a>
+    <a href="#"></a>
+</nav>
+
+<div id="postList">
+    <!-- Example Post -->
+    <div class="post">
+        <h2>Post Title</h2>
+        <p>Post Content goes here. Lorem ipsum dolor sit amet, consectetur adipiscing elit.</p>
+        <div class="card-body">
+            <a href="#" class="btn btn-like" data-post-id="1" onclick="likePost(1)"><i class="fas fa-thumbs-up"></i>
+                Like</a>
+            <a href="#" class="btn btn-comment" data-post-id="1" onclick="openModal(); commentPost(1)"><i
+                    class="fas fa-comment"></i> Comment</a>
+        </div>
+    </div>
+</div>
+<div th:each="post : ${myHomePosts}">
+    <div class="post">
+        <div class="post-content">
+            <h2 th:text="${post.title}"></h2>
+            <p th:text="${post.description}"></p>
+        </div>
+    </div>
+</div>
+
+<div id="commentModal" class="modal">
+    <div class="modal-content">
+        <span class="close" onclick="closeModal()">&times;</span>
+        <label for="commentInput">Enter your comment:</label>
+        <textarea id="commentInput"></textarea>
+        <button onclick="submitComment()">Submit</button>
+    </div>
+</div>
+<script>
+    var allPosts;
+    var likedPosts = []; // Массив для хранения ID постов, которые пользователь лайкнул
+
+    document.addEventListener("DOMContentLoaded", function () {
+        loadPostsAndLikedPosts();
+        setupEventListeners();
+    });
+
+    function loadPostsAndLikedPosts() {
+        loadPostsFromServer();
+        loadLikedPostsFromServer(); // Получение лайкнутых постов текущего пользователя
+    }
+
+    function loadLikedPostsFromServer() {
+        fetch('/getLikedPosts')  // Замените на фактическую точку доступа
+            .then(response => response.json())
+            .then(likedPostsData => {
+                likedPosts = likedPostsData; // Присвоение лайкнутых постов глобальной переменной
+                updateLikedPostStyles(); // Обновление стилей лайкнутых постов
+            })
+            .catch(error => console.error('Ошибка при получении лайкнутых постов:', error));
+    }
+
+    function loadPostsFromServer() {
+        console.log('Fetching posts...'); // Добавленная строка для проверки вызова функции
+        fetch('/home2')  // Укажите путь к вашему методу контроллера
+            .then(response => response.json())
+            .then(posts => {
+                allPosts = posts; // Присвоение полученных данных переменной allPosts
+                displayPosts(allPosts); // Отображение постов
+            })
+            .catch(error => console.error('Error:', error));
+    }
+
+    function displayPosts(posts) {
+        const postList = document.getElementById("postList");
+
+        if (postList && Array.isArray(posts)) {
+            posts.forEach(post => {
+                const postElement = createPostElement(post);
+                postList.appendChild(postElement);
+            });
+
+            updateLikedPostStyles(); // Call the function to update styles for liked posts
+        } else {
+            console.error("Error: 'postList' is not defined or 'posts' is not an array.");
+        }
+    }
+
+
+    function createPostElement(post) {
+        const postElement = document.createElement("div");
+        postElement.classList.add("post");
+        postElement.innerHTML = `
+                <h2>${post.title}</h2>
+                <p>${post.content}</p>
+                <div class="card-body">
+                    <a href="#" class="btn btn-like" data-post-id="${post.id}" onclick="likePost(${post.id})"><i class="fas fa-thumbs-up"></i> Like</a>
+                    <a href="#" class="btn btn-comment" onclick="commentPost(${post.id})"><i class="fas fa-comment"></i> Comment</a>
+                </div>`;
+        return postElement;
+    }
+
+    function updateLikedPostStyles() {
+        // Обновление стилей лайкнутых постов на основе массива likedPosts
+        const likeButtons = document.querySelectorAll('.btn-like');
+
+        likeButtons.forEach(button => {
+            const postId = parseInt(button.getAttribute('data-post-id'));
+
+            if (likedPosts.includes(postId)) {
+                button.style.backgroundColor = '#ff0000'; // Установка красного цвета фона для лайкнутых постов
+            } else {
+                button.style.backgroundColor = ''; // Сброс цвета фона, если пост не лайкнут
+            }
+        });
+    }
+
+    function openModal() {
+        document.getElementById('commentModal').style.display = 'block';
+    }
+
+    function closeModal() {
+        document.getElementById('commentModal').style.display = 'none';
+    }
+
+    function submitComment(postId) {
+        const commentText = document.getElementById('commentInput').value;
+
+        const commentEndpoint = `/comment/${postId}`;
+
+        fetch(commentEndpoint, {
+            method: 'POST',
+            headers: {
+                'Content-Type': 'application/json',
+            },
+            body: JSON.stringify({commentText: commentText}),
+        })
+            .then(response => {
+                if (!response.ok) {
+                    throw new Error(`Failed to comment on post with ID: ${postId}`);
+                }
+                console.log(`Commented on post with ID: ${postId}`);
+                closeModal();
+            })
+            .catch(error => {
+                console.error(error.message);
+            });
+    }
+
+
+    function likePost(postId) {
+        const likeEndpoint = `/like/${postId}`;
+
+        // Проверяем, лайкнут ли уже пост
+        const isPostLiked = likedPosts.includes(postId);
+
+        fetch(likeEndpoint, {
+            method: isPostLiked ? 'DELETE' : 'POST', // Используем DELETE, чтобы убрать лайк
+            headers: {
+                'Content-Type': 'application/json',
+                // Включите любые дополнительные заголовки при необходимости (например, токен аутентификации)
+            },
+        })
+            .then(response => {
+                if (!response.ok) {
+                    throw new Error(`Failed to ${isPostLiked ? 'unlike' : 'like'} post with ID: ${postId}`);
+                }
+
+                console.log(`${isPostLiked ? 'Unliked' : 'Liked'} post with ID: ${postId}`);
+
+                // Обновляем массив лайкнутых постов
+                if (isPostLiked) {
+                    likedPosts = likedPosts.filter(id => id !== postId);
+                } else {
+                    likedPosts.push(postId);
+                }
+
+                // Обновляем стили лайкнутых постов
+                updateLikedPostStyles();
+            })
+            .catch(error => {
+                console.error(error.message);
+                // Обработайте ошибку по необходимости (например, покажите сообщение пользователю)
+            });
+    }
+
+    function commentPost(postId) {
+        const commentText = prompt("Enter your comment:");
+
+        if (!commentText) {
+            // Handle the case where the user cancels or doesn't provide a comment
+            return;
+        }
+
+        const commentEndpoint = `/comment/${postId}`;
+
+        fetch(commentEndpoint, {
+            method: 'POST',
+            headers: {
+                'Content-Type': 'application/json',
+            },
+            body: JSON.stringify({commentText: commentText}),
+        })
+            .then(response => {
+                if (!response.ok) {
+                    throw new Error(`Failed to comment on post with ID: ${postId}`);
+                }
+                console.log(`Commented on post with ID: ${postId}`);
+            })
+            .catch(error => {
+                console.error(error.message);
+            });
+    }
+</script>
+</body>
+
+</html>

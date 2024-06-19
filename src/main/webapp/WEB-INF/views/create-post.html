@@ -1,0 +1,235 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Create Post</title>
+    <style>
+        body {
+            font-family: 'Arial', sans-serif;
+            background-color: #f4f4f4;
+            margin: 0;
+            padding: 0;
+        }
+
+        header {
+            background-color: #333;
+            color: #fff;
+            text-align: center;
+            padding: 1em 0;
+        }
+
+        body {
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            margin: 0;
+            padding: 0;
+            background-color: #f4f4f4;
+        }
+
+        header {
+            background-color: #333;
+            color: #fff;
+            padding: 10px;
+            text-align: center;
+        }
+
+        nav {
+            width: 20%;
+            float: left;
+            background-color: #ddd;
+            padding: 80px;
+            box-sizing: border-box;
+        }
+
+        section {
+            width: 80%;
+            float: left;
+            padding: 20px;
+            box-sizing: border-box;
+        }
+
+        nav a {
+            display: block;
+            margin-bottom: 20px;
+            padding: 20px;
+            text-decoration: none;
+            color: #333;
+            font-weight: bold;
+            border-radius: 5px;
+            transition: background-color 0.3s ease;
+        }
+
+        nav a:hover {
+            color: #fff;
+            background-color: #0018ff;
+        }
+
+        .post {
+            max-width: 400px; /* Устанавливаем максимальную ширину поста */
+            margin: 0 auto; /* Центрируем пост по горизонтали */
+            background-color: #fff;
+            border-radius: 12px;
+            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+            padding: 20px;
+            margin-bottom: 20px;
+            transition: transform 0.3s ease;
+        }
+
+        .post:hover {
+            transform: scale(1.02);
+        }
+
+        .post h2 {
+            color: #333;
+            font-size: 1.5em;
+            margin-bottom: 10px;
+        }
+
+        .post p {
+            color: #666;
+            line-height: 1.5;
+        }
+
+        .post .card-body {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+
+        .post a.btn {
+            text-decoration: none;
+            color: #fff;
+            padding: 10px 15px;
+            border-radius: 5px;
+            cursor: pointer;
+            transition: background-color 0.3s ease;
+        }
+
+        .post a.btn-danger {
+            background-color: #ff4d4d;
+        }
+
+        .post a.btn-primary {
+            background-color: #4d94ff;
+        }
+
+        .post a.btn:hover {
+            background-color: #0018ff;
+        }
+
+        nav {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 20%;
+            background-color: #ddd;
+            padding: 120px;
+            box-sizing: border-box;
+            transition: top 0.3s ease; /* Добавлено для плавного скрытия/показа nav */
+        }
+
+        nav.hidden {
+            top: -80px; /* Скрываем nav при фиксации */
+        }
+
+
+        .profile-container {
+            max-width: 800px;
+            margin: 20px auto;
+            padding: 20px;
+            background-color: #fff;
+            box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+            border-radius: 8px;
+        }
+
+        .post-container {
+            margin-top: 20px;
+        }
+
+        .post {
+            background-color: #fff;
+            padding: 15px;
+            margin-bottom: 15px;
+            border: 1px solid #ddd;
+            border-radius: 8px;
+        }
+
+        .follower-info {
+            background-color: #fff;
+            padding: 15px;
+            margin-top: 20px;
+            border: 1px solid #ddd;
+            border-radius: 8px;
+        }
+
+        body {
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            margin: 0;
+            padding: 0;
+            background-color: #f4f4f4;
+        }
+
+        form {
+            max-width: 600px;
+            margin: 50px auto;
+            background-color: #fff;
+            border-radius: 8px;
+            box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+            padding: 20px;
+        }
+
+        label {
+            display: block;
+            margin-bottom: 10px;
+        }
+
+        input,
+        textarea {
+            width: 100%;
+            padding: 10px;
+            margin-bottom: 20px;
+            box-sizing: border-box;
+            border: 1px solid #ccc;
+            border-radius: 5px;
+        }
+
+        input[type="submit"] {
+            background-color: #333;
+            color: #fff;
+            cursor: pointer;
+        }
+
+        input[type="submit"]:hover {
+            background-color: #0018ff;
+        }
+    </style>
+</head>
+<body>
+<nav>
+    <a href="#"></a>
+    <a th:href="@{/home}" class="nav-link">Home</a>
+    <a href="#">Search</a>
+    <a href="#">Messages</a>
+    <a th:href="@{create/post/new}" class="nav-link">Create post </a>
+    <a th:href="@{/myProfile}" class="nav-link">My profile </a>
+    <a href="#"></a>
+</nav>
+
+<form action="#" th:action="@{/create/post/save}" th:object="${newPost}" method="post">
+    <h2>Create Post</h2>
+
+    <label for="title">Title:</label>
+    <input type="text" th:field="*{title}" id="title" required="required"/>
+
+    <label for="description">Description:</label>
+    <input type="text" th:field="*{description}" id="description" required="required"/>
+
+    <label for="imageUrl">Image URL:</label>
+    <input type="text" th:field="*{images[0].imageUrl}" id="imageUrl" required="required"/>
+
+    <button type="submit">Add Post</button>
+</form>
+
+</body>
+</html>
+
